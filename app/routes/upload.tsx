@@ -10,7 +10,7 @@ import {prepareInstructions} from "../../constants";
 export const meta = () => (
     [
         {title:'Resumind | Upload'},
-        {name:'description', content:"Log into your account"}
+        {name:'description', content:"Upload resume"}
     ]
 )
 
@@ -40,7 +40,7 @@ const Upload = () => {
 
         if(!imageFile.file) return setStatusText("Error,Failed to convert pdf to image")
 
-        setStatusText("Uploading to image...")
+        setStatusText("Uploading the image...")
 
         const uploadedImage = await fs.upload([imageFile.file])
 
@@ -77,9 +77,11 @@ const Upload = () => {
 
         data.feedback = JSON.parse(feedbackText)
 
-        await kv.set(`resume ${uuid}`, JSON.stringify(data))
+        await kv.set(`resume:${uuid}`, JSON.stringify(data))
 
         setStatusText('Analysis complete! Redirecting...')
+
+        navigate(`/resume/${uuid}`)
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
